@@ -13,7 +13,7 @@ services:
       - "9200:9200"
       - "9300:9300"
     environment:
-      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+      ES_JAVA_OPTS: "-Xmx768m -Xms768m"
       ELASTIC_PASSWORD: changeme
       # Use single node discovery in order to disable production mode and avoid bootstrap checks.
       # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
@@ -22,6 +22,7 @@ services:
       memlock:
         soft: -1
         hard: -1
+    restart: unless-stopped
     networks:
       - elk
 
@@ -39,7 +40,8 @@ services:
       - "5000:5000/udp"
       - "9600:9600"
     environment:
-      LS_JAVA_OPTS: "-Xmx512m -Xms512m"
+      LS_JAVA_OPTS: "-Xmx768m -Xms768m"
+    restart: unless-stopped
     networks:
       - elk
     depends_on:
@@ -54,6 +56,7 @@ services:
       - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,z
     ports:
       - "5601:5601"
+    restart: unless-stopped
     networks:
       - elk
     depends_on:
@@ -64,4 +67,4 @@ networks:
     driver: bridge
 
 volumes:
-  elasticsearch:
+  elasticsearch: null
